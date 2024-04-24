@@ -9,6 +9,7 @@ sealed class ESPMod : MonoBehaviour {
     Renderer[] LandmineRenderers { get; set; } = [];
     Renderer[] TurretRenderers { get; set; } = [];
     Renderer[] EntranceRenderers { get; set; } = [];
+    Renderer[] SpikeRoofTrapRenderers { get; set; } = [];
     Vector3[] StoryLogVectors { get; set; } = [];
 
     bool InGame { get; set; } = false;
@@ -91,7 +92,12 @@ sealed class ESPMod : MonoBehaviour {
             Color.yellow,
             this.RenderLabel("Entrance")
         ));
-
+        this.SpikeRoofTrapRenderers.ForEach(renderer => this.RenderBounds(
+            camera,
+            renderer.bounds,
+            Color.yellow,
+            this.RenderLabel("SpikeRoofTrap")
+        ));
         this.StoryLogVectors.ForEach(vector => {
             Vector3 rendererCentrePoint = camera.WorldToEyesPoint(vector);
 
@@ -164,6 +170,7 @@ sealed class ESPMod : MonoBehaviour {
         this.LandmineRenderers = this.GetRenderers<Landmine>();
         this.TurretRenderers = this.GetRenderers<Turret>();
         this.EntranceRenderers = this.GetRenderers<EntranceTeleport>();
+        this.SpikeRoofTrapRenderers = this.GetRenderers<SpikeRoofTrap>();
     }
 
     void InitialiseCoordinates() => this.StoryLogVectors = Helper.FindObjects<StoryLog>().Select(log => log.transform.position).ToArray();
